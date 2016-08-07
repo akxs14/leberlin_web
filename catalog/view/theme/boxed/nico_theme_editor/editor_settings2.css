@@ -1,0 +1,106 @@
+body, .header, body#home div#header,.heading.title h2, .filters li, .content,.placeholder .back, #container, body#home #top, div.content > div.show
+{
+	background:#000;
+	color:#fff;
+}
+
+div#header
+{
+	background:#222;
+}
+
+#top, .product_wish_compare button, .tab-content, .tabs .nav-tabs > li.active > a
+{
+	background:#333;
+	color:#fff;
+}
+
+.product_wish_compare button
+{
+	background:#222;
+}
+
+.navbar .nav > li:hover,.yamm .dropdown.yamm-fw .dropdown-menu
+{
+	background:#555;
+}
+
+.navbar .nav > li > a, body#home .navbar .nav > li > a, #logo a,.navbar .nav > li b,.product .name a, .blog-item .readmore,.navbar .nav > li.highlight > a,.product-info h1,.price,.tab-pane,.filters li, .product-info .control-label, h3, h2, h1,
+.cart-info tbody tr td,.footer h3, .cart-totals .table th, .table td, .cat_header h2
+{
+	color:#fff;
+}
+
+#top > a,#top-links > a, #welcome > a,.btn.btn-link,#top > a,.description p,.blog-title > a,.heading.title h2,.product-info li,.btn.btn-link:hover, #cart > span,.footer a, label
+{
+	color:#eee;
+}
+
+
+#logo, .filters li, .blog-item .readmore 
+{
+	border-color:#fff;
+}
+
+.filters li, #top div.cart a,#social_band h3
+{
+	color:#fff;
+}
+
+.product-info #button-cart, .button, .btn-primary, #button-confirm, input[type="text"]
+{
+	background:#fff;
+	color:#000;
+}
+
+hr, .nav-tabs, .product-info .nav-tabs
+{
+	border-color:#333;
+}
+
+.product-info input[type="text"], .table-bordered, .tabs .table, .table,.cart-info.dropdown-menu 
+{
+  background:#333333;
+  border: 1px solid #333333;
+  color: #ffffff;
+}
+
+.product-info input#input-quantity[type="text"] 
+{
+	border-color:#555;
+	background:#222;
+}
+
+span.close-content {
+	background:url(/catalog/view/theme/boxed/img/close_white.png);
+}	
+
+
+.nav.cart > a, #cart > button
+{
+    background-image: url("../img/cart_white.png");
+}
+
+
+.product > div > div.hover
+{
+   background: rgba(0, 0, 0, 0.7);
+}
+
+.product > div > div.hover > div > a > span
+{
+	border:1px solid #fff;
+	color:#fff;
+}
+
+#social_band, .footer, table.radio,.cart-info thead th,.cart-info thead tr
+{
+	background:#333;
+	color:#fff;
+	border:none !important;
+}
+
+.cart-info thead th,.cart-info thead tr
+{
+	background:#000;
+}

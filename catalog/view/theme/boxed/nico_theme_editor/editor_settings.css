@@ -1,0 +1,13 @@
+
+
+/* left_column_align - left_column_align-left_center.css */
+
+@media (min-width: 768px)
+{
+	#header > div
+	{
+		text-align:left;
+		padding-left:50px;
+	}
+}
+#language{display:block;}

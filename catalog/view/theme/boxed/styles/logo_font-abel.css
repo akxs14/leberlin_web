@@ -1,0 +1,7 @@
+@import url('http://fonts.googleapis.com/css?family=Abel');
+
+#logo a 
+{
+	font-family:'Abel';
+	text-transform:capitalize;
+}

@@ -1,0 +1,7 @@
+@import url('http://fonts.googleapis.com/css?family=Shadows+Into+Light');
+
+#logo a 
+{
+	font-family:'Shadows Into Light';
+	text-transform:capitalize;
+}

@@ -1,0 +1,11 @@
+div#header
+{
+	vertical-align:bottom;
+}
+
+.yamm .dropdown.yamm-fw .dropdown-menu,
+.navbar .dropdown-menu
+{
+	top:auto;
+	bottom:0px;
+}

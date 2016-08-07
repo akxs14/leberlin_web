@@ -1,0 +1,9 @@
+.product .name a {
+	overflow: hidden;
+	white-space: pre;
+}
+
+.product .name
+{
+	max-height: none;
+}

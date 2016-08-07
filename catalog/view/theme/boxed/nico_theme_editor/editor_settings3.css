@@ -1,0 +1,78 @@
+#language{display:block;}
+#currency{display:block;}
+.navbar .navbar-brand span{display:none;}
+.navbar-brand > img{display:inline-block;}
+#logo span{display:inline;}
+#logo a > img{display:none;}
+body { background-image: none;}
+
+
+
+/* background_color -  */
+
+
+
+/* page_alignment -  */
+
+
+
+/* grid_text -  */
+
+
+
+/* page_background - page_background-dark.css */
+@media (min-width: 768px)
+{
+	.header
+	{
+		background:#333;
+		background:rgba(0, 0, 0, 0.8);
+	}
+
+	#logo a
+	{
+		color:#fff;
+		border-color:rgba(255, 255, 255, 0.3);
+	}
+
+
+	body .navbar .nav > li > a, body#home .navbar .nav > li > a, .navbar .nav > li b, .navbar .nav > li.highlight > a
+	{
+		color:#fff;
+	}
+
+	body#home .navbar .nav > li:hover > a, body .navbar .nav > li:hover > a
+	{
+		color:#333;
+	}
+	
+	.sicons li a
+	{
+		color:#fff;
+	}	
+}
+
+
+div.sequence h2 {
+  color:#fff;
+}
+
+div.sequence  .line {
+  border-bottom: 2px solid #fff;
+  border-bottom: 2px solid rgba(255,255,255,0.5);
+}
+
+div.sequence h3 {
+  color:#fff;
+}
+
+div.sequence p {
+    color:#fff;
+}
+
+div.sequence a.button
+{
+	color:#333;
+	background:#fff;
+}
+

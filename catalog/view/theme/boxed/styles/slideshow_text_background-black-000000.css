@@ -1,0 +1,7 @@
+.message-slide > div
+{
+	background:#333;
+	background:rgba(0,0,0, 0.85);
+	padding:10px 20px;
+	display: inline-block;
+}
