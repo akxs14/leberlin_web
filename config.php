@@ -1,4 +1,4 @@
-<?php
+<?php 
 // HTTP
 define('HTTP_SERVER', 'http://hidden-savannah-8211.herokuapp.com/opencart');
 define('HTTP_IMAGE', 'http://hidden-savannah-8211.herokuapp.com/opencartimage/');
