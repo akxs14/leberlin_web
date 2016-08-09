@@ -1,8 +1,0 @@
-@media(max-width:768px)
-{
-   .product > div > div.hover
-   {
-     opacity:1;
-    background:transparent;
-   }
-}
