@@ -1,36 +1,37 @@
 <?php
 class ControllerExtensionInstaller extends Controller {
+	private $error = array();
+
 	public function index() {
 		$this->load->language('extension/installer');
 
 		$this->document->setTitle($this->language->get('heading_title'));
-		
+
+		$data['heading_title'] = $this->language->get('heading_title');
+
+		$data['text_loading'] = $this->language->get('text_loading');
+
+		$data['entry_upload'] = $this->language->get('entry_upload');
+		$data['entry_overwrite'] = $this->language->get('entry_overwrite');
+		$data['entry_progress'] = $this->language->get('entry_progress');
+
+		$data['help_upload'] = $this->language->get('help_upload');
+
+		$data['button_upload'] = $this->language->get('button_upload');
+		$data['button_clear'] = $this->language->get('button_clear');
+		$data['button_continue'] = $this->language->get('button_continue');
+
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL')
 		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('extension/installer', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('extension/installer', 'token=' . $this->session->data['token'], 'SSL')
 		);
-		
-		$data['heading_title'] = $this->language->get('heading_title');
-        
-		$data['text_upload'] = $this->language->get('text_upload');
-		$data['text_loading'] = $this->language->get('text_loading');
-			
-		$data['entry_upload'] = $this->language->get('entry_upload');
-		$data['entry_overwrite'] = $this->language->get('entry_overwrite');
-		$data['entry_progress'] = $this->language->get('entry_progress');
-	
-		$data['help_upload'] = $this->language->get('help_upload');
-		
-		$data['button_upload'] = $this->language->get('button_upload');
-		$data['button_clear'] = $this->language->get('button_clear');
-		$data['button_continue'] = $this->language->get('button_continue');
 
 		$data['token'] = $this->session->data['token'];
 
@@ -41,14 +42,14 @@ class ControllerExtensionInstaller extends Controller {
 		} else {
 			$data['error_warning'] = '';
 		}
-		
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
-		
-		$this->response->setOutput($this->load->view('extension/installer', $data));
+
+		$this->response->setOutput($this->load->view('extension/installer.tpl', $data));
 	}
-	
+
 	public function upload() {
 		$this->load->language('extension/installer');
 
@@ -94,14 +95,14 @@ class ControllerExtensionInstaller extends Controller {
 				if (file_exists($file)) {
 					$json['step'][] = array(
 						'text' => $this->language->get('text_xml'),
-						'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/xml', 'token=' . $this->session->data['token'], true)),
+						'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/xml', 'token=' . $this->session->data['token'], 'SSL')),
 						'path' => $path
 					);
 
 					// Clear temporary files
 					$json['step'][] = array(
 						'text' => $this->language->get('text_remove'),
-						'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/remove', 'token=' . $this->session->data['token'], true)),
+						'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/remove', 'token=' . $this->session->data['token'], 'SSL')),
 						'path' => $path
 					);
 				} else {
@@ -122,14 +123,14 @@ class ControllerExtensionInstaller extends Controller {
 						// Zip
 						$json['step'][] = array(
 							'text' => $this->language->get('text_unzip'),
-							'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/unzip', 'token=' . $this->session->data['token'], true)),
+							'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/unzip', 'token=' . $this->session->data['token'], 'SSL')),
 							'path' => $path
 						);
 
 						// FTP
 						$json['step'][] = array(
 							'text' => $this->language->get('text_ftp'),
-							'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/ftp', 'token=' . $this->session->data['token'], true)),
+							'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/ftp', 'token=' . $this->session->data['token'], 'SSL')),
 							'path' => $path
 						);
 
@@ -141,7 +142,7 @@ class ControllerExtensionInstaller extends Controller {
 							if (substr($zip_name, 0, 11) == 'install.sql') {
 								$json['step'][] = array(
 									'text' => $this->language->get('text_sql'),
-									'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/sql', 'token=' . $this->session->data['token'], true)),
+									'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/sql', 'token=' . $this->session->data['token'], 'SSL')),
 									'path' => $path
 								);
 							}
@@ -150,7 +151,7 @@ class ControllerExtensionInstaller extends Controller {
 							if (substr($zip_name, 0, 11) == 'install.xml') {
 								$json['step'][] = array(
 									'text' => $this->language->get('text_xml'),
-									'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/xml', 'token=' . $this->session->data['token'], true)),
+									'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/xml', 'token=' . $this->session->data['token'], 'SSL')),
 									'path' => $path
 								);
 							}
@@ -159,7 +160,7 @@ class ControllerExtensionInstaller extends Controller {
 							if (substr($zip_name, 0, 11) == 'install.php') {
 								$json['step'][] = array(
 									'text' => $this->language->get('text_php'),
-									'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/php', 'token=' . $this->session->data['token'], true)),
+									'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/php', 'token=' . $this->session->data['token'], 'SSL')),
 									'path' => $path
 								);
 							}
@@ -196,7 +197,7 @@ class ControllerExtensionInstaller extends Controller {
 						// Clear temporary files
 						$json['step'][] = array(
 							'text' => $this->language->get('text_remove'),
-							'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/remove', 'token=' . $this->session->data['token'], true)),
+							'url'  => str_replace('&amp;', '&', $this->url->link('extension/installer/remove', 'token=' . $this->session->data['token'], 'SSL')),
 							'path' => $path
 						);
 
@@ -213,7 +214,7 @@ class ControllerExtensionInstaller extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
- 
+
 	public function unzip() {
 		$this->load->language('extension/installer');
 
@@ -224,9 +225,9 @@ class ControllerExtensionInstaller extends Controller {
 		}
 
 		// Sanitize the filename
-		$file = DIR_UPLOAD . $this->request->post['path'] . '/upload.zip';
+		$file = DIR_UPLOAD . str_replace(array('../', '..\\', '..'), '', $this->request->post['path']) . '/upload.zip';
 
-		if (!is_file($file) || substr(str_replace('\\', '/', realpath($file)), 0, strlen(DIR_UPLOAD)) != DIR_UPLOAD) {
+		if (!file_exists($file)) {
 			$json['error'] = $this->language->get('error_file');
 		}
 
@@ -235,7 +236,7 @@ class ControllerExtensionInstaller extends Controller {
 			$zip = new ZipArchive();
 
 			if ($zip->open($file)) {
-				$zip->extractTo(DIR_UPLOAD . $this->request->post['path']);
+				$zip->extractTo(DIR_UPLOAD . str_replace(array('../', '..\\', '..'), '', $this->request->post['path']));
 				$zip->close();
 			} else {
 				$json['error'] = $this->language->get('error_unzip');
@@ -263,9 +264,9 @@ class ControllerExtensionInstaller extends Controller {
 			$json['error'] = $this->language->get('error_ftp_status');
 		}
 
-		$directory = DIR_UPLOAD . $this->request->post['path'] . '/upload/';
+		$directory = DIR_UPLOAD . str_replace(array('../', '..\\', '..'), '', $this->request->post['path']) . '/upload/';
 
-		if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen(DIR_UPLOAD)) != DIR_UPLOAD) {
+		if (!is_dir($directory)) {
 			$json['error'] = $this->language->get('error_directory');
 		}
 
@@ -324,12 +325,12 @@ class ControllerExtensionInstaller extends Controller {
 							}
 
 							if (is_dir($file)) {
-								$lists = ftp_nlist($connection, substr($destination, 0, strrpos($destination, '/')));
+								$list = ftp_nlist($connection, substr($destination, 0, strrpos($destination, '/')));
 
 								// Basename all the directories because on some servers they don't return the fulll paths.
 								$list_data = array();
 
-								foreach ($lists as $list) {
+								foreach ($list as $list) {
 									$list_data[] = basename($list);
 								}
 
@@ -372,9 +373,9 @@ class ControllerExtensionInstaller extends Controller {
 			$json['error'] = $this->language->get('error_permission');
 		}
 
-		$file = DIR_UPLOAD . $this->request->post['path'] . '/install.sql';
+		$file = DIR_UPLOAD . str_replace(array('../', '..\\', '..'), '', $this->request->post['path']) . '/install.sql';
 
-		if (!is_file($file) || substr(str_replace('\\', '/', realpath($file)), 0, strlen(DIR_UPLOAD)) != DIR_UPLOAD) {
+		if (!file_exists($file)) {
 			$json['error'] = $this->language->get('error_file');
 		}
 
@@ -417,9 +418,9 @@ class ControllerExtensionInstaller extends Controller {
 			$json['error'] = $this->language->get('error_permission');
 		}
 
-		$file = DIR_UPLOAD . $this->request->post['path'] . '/install.xml';
+		$file = DIR_UPLOAD . str_replace(array('../', '..\\', '..'), '', $this->request->post['path']) . '/install.xml';
 
-		if (!is_file($file) || substr(str_replace('\\', '/', realpath($file)), 0, strlen(DIR_UPLOAD)) != DIR_UPLOAD) {
+		if (!file_exists($file)) {
 			$json['error'] = $this->language->get('error_file');
 		}
 
@@ -513,9 +514,9 @@ class ControllerExtensionInstaller extends Controller {
 			$json['error'] = $this->language->get('error_permission');
 		}
 
-		$file = DIR_UPLOAD . $this->request->post['path'] . '/install.php';
+		$file = DIR_UPLOAD . str_replace(array('../', '..\\', '..'), '', $this->request->post['path']) . '/install.php';
 
-		if (!is_file($file) || substr(str_replace('\\', '/', realpath($file)), 0, strlen(DIR_UPLOAD)) != DIR_UPLOAD) {
+		if (!file_exists($file)) {
 			$json['error'] = $this->language->get('error_file');
 		}
 
@@ -540,9 +541,9 @@ class ControllerExtensionInstaller extends Controller {
 			$json['error'] = $this->language->get('error_permission');
 		}
 
-		$directory = DIR_UPLOAD . $this->request->post['path'];
-		
-		if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen(DIR_UPLOAD)) != DIR_UPLOAD) {
+		$directory = DIR_UPLOAD . str_replace(array('../', '..\\', '..'), '', $this->request->post['path']);
+
+		if (!is_dir($directory)) {
 			$json['error'] = $this->language->get('error_directory');
 		}
 
@@ -572,7 +573,6 @@ class ControllerExtensionInstaller extends Controller {
 			foreach ($files as $file) {
 				if (is_file($file)) {
 					unlink($file);
-
 				} elseif (is_dir($file)) {
 					rmdir($file);
 				}
@@ -601,41 +601,39 @@ class ControllerExtensionInstaller extends Controller {
 		if (!$json) {
 			$directories = glob(DIR_UPLOAD . 'temp-*', GLOB_ONLYDIR);
 
-			if ($directories) {
-				foreach ($directories as $directory) {
-					// Get a list of files ready to upload
-					$files = array();
+			foreach ($directories as $directory) {
+				// Get a list of files ready to upload
+				$files = array();
 
-					$path = array($directory);
+				$path = array($directory);
 
-					while (count($path) != 0) {
-						$next = array_shift($path);
+				while (count($path) != 0) {
+					$next = array_shift($path);
 
-						// We have to use scandir function because glob will not pick up dot files.
-						foreach (array_diff(scandir($next), array('.', '..')) as $file) {
-							$file = $next . '/' . $file;
+					// We have to use scandir function because glob will not pick up dot files.
+					foreach (array_diff(scandir($next), array('.', '..')) as $file) {
+						$file = $next . '/' . $file;
 
-							if (is_dir($file)) {
-								$path[] = $file;
-							}
-
-							$files[] = $file;
+						if (is_dir($file)) {
+							$path[] = $file;
 						}
-					}
 
-					rsort($files);
-
-					foreach ($files as $file) {
-						if (is_file($file)) {
-							unlink($file);
-						} elseif (is_dir($file)) {
-							rmdir($file);
-						}
+						$files[] = $file;
 					}
+				}
 
-					if (file_exists($directory)) {
-						rmdir($directory);
+				rsort($files);
+
+				foreach ($files as $file) {
+					if (is_file($file)) {
+						unlink($file);
+					} elseif (is_dir($file)) {
+						rmdir($file);
 					}
+				}
+
+				if (file_exists($directory)) {
+					rmdir($directory);
 				}
 			}
 

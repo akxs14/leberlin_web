@@ -59,7 +59,11 @@ class ControllerCheckoutPaymentAddress extends Controller {
 			$data['payment_address_custom_field'] = array();
 		}
 
-		$this->response->setOutput($this->load->view('checkout/payment_address', $data));
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/checkout/payment_address.tpl')) {
+			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/checkout/payment_address.tpl', $data));
+		} else {
+			$this->response->setOutput($this->load->view('default/template/checkout/payment_address.tpl', $data));
+		}
 	}
 
 	public function save() {
@@ -69,7 +73,7 @@ class ControllerCheckoutPaymentAddress extends Controller {
 
 		// Validate if customer is logged in.
 		if (!$this->customer->isLogged()) {
-			$json['redirect'] = $this->url->link('checkout/checkout', '', true);
+			$json['redirect'] = $this->url->link('checkout/checkout', '', 'SSL');
 		}
 
 		// Validate cart has products and has stock.
@@ -156,9 +160,7 @@ class ControllerCheckoutPaymentAddress extends Controller {
 				foreach ($custom_fields as $custom_field) {
 					if (($custom_field['location'] == 'address') && $custom_field['required'] && empty($this->request->post['custom_field'][$custom_field['custom_field_id']])) {
 						$json['error']['custom_field' . $custom_field['custom_field_id']] = sprintf($this->language->get('error_custom_field'), $custom_field['name']);
-					} elseif (($custom_field['location'] == 'address') && ($custom_field['type'] == 'text') && !empty($custom_field['validation']) && !filter_var($this->request->post['custom_field'][$custom_field['custom_field_id']], FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $custom_field['validation'])))) {
-                        $json['error']['custom_field' . $custom_field['custom_field_id']] = sprintf($this->language->get('error_custom_field'), $custom_field['name']);
-                    }
+					}
 				}
 
 				if (!$json) {
@@ -172,16 +174,14 @@ class ControllerCheckoutPaymentAddress extends Controller {
 					unset($this->session->data['payment_method']);
 					unset($this->session->data['payment_methods']);
 
-					if ($this->config->get('config_customer_activity')) {
-						$this->load->model('account/activity');
+					$this->load->model('account/activity');
 
-						$activity_data = array(
-							'customer_id' => $this->customer->getId(),
-							'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName()
-						);
+					$activity_data = array(
+						'customer_id' => $this->customer->getId(),
+						'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName()
+					);
 
-						$this->model_account_activity->addActivity('address_add', $activity_data);
-					}
+					$this->model_account_activity->addActivity('address_add', $activity_data);
 				}
 			}
 		}

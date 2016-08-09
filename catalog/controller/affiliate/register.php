@@ -4,7 +4,7 @@ class ControllerAffiliateRegister extends Controller {
 
 	public function index() {
 		if ($this->affiliate->isLogged()) {
-			$this->response->redirect($this->url->link('affiliate/account', '', true));
+			$this->response->redirect($this->url->link('affiliate/account', '', 'SSL'));
 		}
 
 		$this->load->language('affiliate/register');
@@ -23,16 +23,14 @@ class ControllerAffiliateRegister extends Controller {
 			$this->affiliate->login($this->request->post['email'], $this->request->post['password']);
 
 			// Add to activity log
-			if ($this->config->get('config_customer_activity')) {
-				$this->load->model('affiliate/activity');
+			$this->load->model('affiliate/activity');
 
-				$activity_data = array(
-					'affiliate_id' => $affiliate_id,
-					'name'         => $this->request->post['firstname'] . ' ' . $this->request->post['lastname']
-				);
+			$activity_data = array(
+				'affiliate_id' => $affiliate_id,
+				'name'         => $this->request->post['firstname'] . ' ' . $this->request->post['lastname']
+			);
 
-				$this->model_affiliate_activity->addActivity('register', $activity_data);
-			}
+			$this->model_affiliate_activity->addActivity('register', $activity_data);
 
 			$this->response->redirect($this->url->link('affiliate/success'));
 		}
@@ -46,19 +44,19 @@ class ControllerAffiliateRegister extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_account'),
-			'href' => $this->url->link('affiliate/account', '', true)
+			'href' => $this->url->link('affiliate/account', '', 'SSL')
 		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_register'),
-			'href' => $this->url->link('affiliate/register', '', true)
+			'href' => $this->url->link('affiliate/register', '', 'SSL')
 		);
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_select'] = $this->language->get('text_select');
 		$data['text_none'] = $this->language->get('text_none');
-		$data['text_account_already'] = sprintf($this->language->get('text_account_already'), $this->url->link('affiliate/login', '', true));
+		$data['text_account_already'] = sprintf($this->language->get('text_account_already'), $this->url->link('affiliate/login', '', 'SSL'));
 		$data['text_signup'] = $this->language->get('text_signup');
 		$data['text_your_details'] = $this->language->get('text_your_details');
 		$data['text_your_address'] = $this->language->get('text_your_address');
@@ -167,7 +165,7 @@ class ControllerAffiliateRegister extends Controller {
 			$data['error_zone'] = '';
 		}
 
-		$data['action'] = $this->url->link('affiliate/register', '', true);
+		$data['action'] = $this->url->link('affiliate/register', '', 'SSL');
 
 		if (isset($this->request->post['firstname'])) {
 			$data['firstname'] = $this->request->post['firstname'];
@@ -236,7 +234,7 @@ class ControllerAffiliateRegister extends Controller {
 		}
 
 		if (isset($this->request->post['country_id'])) {
-			$data['country_id'] = $this->request->post['country_id'];
+			$data['country_id'] = (int)$this->request->post['country_id'];
 		} else {
 			$data['country_id'] = $this->config->get('config_country_id');
 		}
@@ -319,7 +317,7 @@ class ControllerAffiliateRegister extends Controller {
 
 		// Captcha
 		if ($this->config->get($this->config->get('config_captcha') . '_status') && in_array('register', (array)$this->config->get('config_captcha_page'))) {
-			$data['captcha'] = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha'), $this->error);
+			$data['captcha'] = $this->load->controller('captcha/' . $this->config->get('config_captcha'), $this->error);
 		} else {
 			$data['captcha'] = '';
 		}
@@ -330,7 +328,7 @@ class ControllerAffiliateRegister extends Controller {
 			$information_info = $this->model_catalog_information->getInformation($this->config->get('config_affiliate_id'));
 
 			if ($information_info) {
-				$data['text_agree'] = sprintf($this->language->get('text_agree'), $this->url->link('information/information/agree', 'information_id=' . $this->config->get('config_affiliate_id'), true), $information_info['title'], $information_info['title']);
+				$data['text_agree'] = sprintf($this->language->get('text_agree'), $this->url->link('information/information/agree', 'information_id=' . $this->config->get('config_affiliate_id'), 'SSL'), $information_info['title'], $information_info['title']);
 			} else {
 				$data['text_agree'] = '';
 			}
@@ -351,7 +349,11 @@ class ControllerAffiliateRegister extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		$this->response->setOutput($this->load->view('affiliate/register', $data));
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/affiliate/register.tpl')) {
+			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/affiliate/register.tpl', $data));
+		} else {
+			$this->response->setOutput($this->load->view('default/template/affiliate/register.tpl', $data));
+		}
 	}
 
 	protected function validate() {
@@ -363,7 +365,7 @@ class ControllerAffiliateRegister extends Controller {
 			$this->error['lastname'] = $this->language->get('error_lastname');
 		}
 
-		if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
+		if ((utf8_strlen($this->request->post['email']) > 96) || !preg_match('/^[^\@]+@.*.[a-z]{2,15}$/i', $this->request->post['email'])) {
 			$this->error['email'] = $this->language->get('error_email');
 		}
 
@@ -409,7 +411,7 @@ class ControllerAffiliateRegister extends Controller {
 
 		// Captcha
 		if ($this->config->get($this->config->get('config_captcha') . '_status') && in_array('register', (array)$this->config->get('config_captcha_page'))) {
-			$captcha = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha') . '/validate');
+			$captcha = $this->load->controller('captcha/' . $this->config->get('config_captcha') . '/validate');
 
 			if ($captcha) {
 				$this->error['captcha'] = $captcha;

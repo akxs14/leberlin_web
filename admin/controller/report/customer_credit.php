@@ -17,12 +17,6 @@ class ControllerReportCustomerCredit extends Controller {
 			$filter_date_end = '';
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$filter_customer = $this->request->get['filter_customer'];
-		} else {
-			$filter_customer = null;
-		}
-
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
 		} else {
@@ -39,10 +33,6 @@ class ControllerReportCustomerCredit extends Controller {
 			$url .= '&filter_date_end=' . $this->request->get['filter_date_end'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode($this->request->get['filter_customer']);
-		}
-
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
@@ -51,12 +41,12 @@ class ControllerReportCustomerCredit extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL')
 		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('report/customer_credit', 'token=' . $this->session->data['token'] . $url, true)
+			'href' => $this->url->link('report/customer_credit', 'token=' . $this->session->data['token'] . $url, 'SSL')
 		);
 
 		$this->load->model('report/customer');
@@ -66,9 +56,8 @@ class ControllerReportCustomerCredit extends Controller {
 		$filter_data = array(
 			'filter_date_start'	=> $filter_date_start,
 			'filter_date_end'	=> $filter_date_end,
-			'filter_customer'	=> $filter_customer,
-			'start'				=> ($page - 1) * $this->config->get('config_limit_admin'),
-			'limit'				=> $this->config->get('config_limit_admin')
+			'start'             => ($page - 1) * $this->config->get('config_limit_admin'),
+			'limit'             => $this->config->get('config_limit_admin')
 		);
 
 		$customer_total = $this->model_report_customer->getTotalCredit($filter_data);
@@ -82,7 +71,7 @@ class ControllerReportCustomerCredit extends Controller {
 				'customer_group' => $result['customer_group'],
 				'status'         => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
 				'total'          => $this->currency->format($result['total'], $this->config->get('config_currency')),
-				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, true)
+				'edit'           => $this->url->link('customer/customer/edit', 'token=' . $this->session->data['token'] . '&customer_id=' . $result['customer_id'] . $url, 'SSL')
 			);
 		}
 
@@ -101,7 +90,6 @@ class ControllerReportCustomerCredit extends Controller {
 
 		$data['entry_date_start'] = $this->language->get('entry_date_start');
 		$data['entry_date_end'] = $this->language->get('entry_date_end');
-		$data['entry_customer'] = $this->language->get('entry_customer');
 
 		$data['button_edit'] = $this->language->get('button_edit');
 		$data['button_filter'] = $this->language->get('button_filter');
@@ -118,15 +106,11 @@ class ControllerReportCustomerCredit extends Controller {
 			$url .= '&filter_date_end=' . $this->request->get['filter_date_end'];
 		}
 
-		if (isset($this->request->get['filter_customer'])) {
-			$url .= '&filter_customer=' . urlencode($this->request->get['filter_customer']);
-		}
-
 		$pagination = new Pagination();
 		$pagination->total = $customer_total;
 		$pagination->page = $page;
 		$pagination->limit = $this->config->get('config_limit_admin');
-		$pagination->url = $this->url->link('report/customer_credit', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+		$pagination->url = $this->url->link('report/customer_credit', 'token=' . $this->session->data['token'] . $url . '&page={page}', 'SSL');
 
 		$data['pagination'] = $pagination->render();
 
@@ -134,12 +118,11 @@ class ControllerReportCustomerCredit extends Controller {
 
 		$data['filter_date_start'] = $filter_date_start;
 		$data['filter_date_end'] = $filter_date_end;
-		$data['filter_customer'] = $filter_customer;
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('report/customer_credit', $data));
+		$this->response->setOutput($this->load->view('report/customer_credit.tpl', $data));
 	}
 }

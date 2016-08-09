@@ -74,7 +74,7 @@
                 <div class="form-group required">
                   <div class="col-sm-12">
                     <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>
-                    <input type="text" name="name" value="<?php echo $customer_name; ?>" id="input-name" class="form-control" />
+                    <input type="text" name="name" value="" id="input-name" class="form-control" />
                   </div>
                 </div>
                 <div class="form-group required">
@@ -190,9 +190,6 @@
                 <div class="radio">
                   <label>
                     <input type="radio" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option_value['product_option_value_id']; ?>" />
-                    <?php if ($option_value['image']) { ?>
-                    <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" class="img-thumbnail" /> 
-                    <?php } ?>                    
                     <?php echo $option_value['name']; ?>
                     <?php if ($option_value['price']) { ?>
                     (<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)
@@ -211,10 +208,25 @@
                 <div class="checkbox">
                   <label>
                     <input type="checkbox" name="option[<?php echo $option['product_option_id']; ?>][]" value="<?php echo $option_value['product_option_value_id']; ?>" />
-                    <?php if ($option_value['image']) { ?>
-                    <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" class="img-thumbnail" /> 
-                    <?php } ?>
                     <?php echo $option_value['name']; ?>
+                    <?php if ($option_value['price']) { ?>
+                    (<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)
+                    <?php } ?>
+                  </label>
+                </div>
+                <?php } ?>
+              </div>
+            </div>
+            <?php } ?>
+            <?php if ($option['type'] == 'image') { ?>
+            <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?>">
+              <label class="control-label"><?php echo $option['name']; ?></label>
+              <div id="input-option<?php echo $option['product_option_id']; ?>">
+                <?php foreach ($option['product_option_value'] as $option_value) { ?>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="option[<?php echo $option['product_option_id']; ?>]" value="<?php echo $option_value['product_option_value_id']; ?>" />
+                    <img src="<?php echo $option_value['image']; ?>" alt="<?php echo $option_value['name'] . ($option_value['price'] ? ' ' . $option_value['price_prefix'] . $option_value['price'] : ''); ?>" class="img-thumbnail" /> <?php echo $option_value['name']; ?>
                     <?php if ($option_value['price']) { ?>
                     (<?php echo $option_value['price_prefix']; ?><?php echo $option_value['price']; ?>)
                     <?php } ?>
@@ -277,12 +289,12 @@
             <?php } ?>
             <?php if ($recurrings) { ?>
             <hr>
-            <h3><?php echo $text_payment_recurring; ?></h3>
+            <h3><?php echo $text_payment_recurring ?></h3>
             <div class="form-group required">
               <select name="recurring_id" class="form-control">
                 <option value=""><?php echo $text_select; ?></option>
                 <?php foreach ($recurrings as $recurring) { ?>
-                <option value="<?php echo $recurring['recurring_id']; ?>"><?php echo $recurring['name']; ?></option>
+                <option value="<?php echo $recurring['recurring_id'] ?>"><?php echo $recurring['name'] ?></option>
                 <?php } ?>
               </select>
               <div class="help-block" id="recurring-description"></div>
@@ -312,7 +324,7 @@
               <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;"><?php echo $reviews; ?></a> / <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;"><?php echo $text_write; ?></a></p>
             <hr>
             <!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style" data-url="<?php echo $share; ?>"><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> <a class="addthis_button_tweet"></a> <a class="addthis_button_pinterest_pinit"></a> <a class="addthis_counter addthis_pill_style"></a></div>
+            <div class="addthis_toolbox addthis_default_style"><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> <a class="addthis_button_tweet"></a> <a class="addthis_button_pinterest_pinit"></a> <a class="addthis_counter addthis_pill_style"></a></div>
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-515eeaf54693130e"></script>
             <!-- AddThis Button END -->
           </div>
@@ -325,11 +337,11 @@
         <?php $i = 0; ?>
         <?php foreach ($products as $product) { ?>
         <?php if ($column_left && $column_right) { ?>
-        <?php $class = 'col-xs-8 col-sm-6'; ?>
+        <?php $class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12'; ?>
         <?php } elseif ($column_left || $column_right) { ?>
-        <?php $class = 'col-xs-6 col-md-4'; ?>
+        <?php $class = 'col-lg-4 col-md-4 col-sm-6 col-xs-12'; ?>
         <?php } else { ?>
-        <?php $class = 'col-xs-6 col-sm-3'; ?>
+        <?php $class = 'col-lg-3 col-md-3 col-sm-6 col-xs-12'; ?>
         <?php } ?>
         <div class="<?php echo $class; ?>">
           <div class="product-thumb transition">
@@ -339,8 +351,8 @@
               <p><?php echo $product['description']; ?></p>
               <?php if ($product['rating']) { ?>
               <div class="rating">
-                <?php for ($j = 1; $j <= 5; $j++) { ?>
-                <?php if ($product['rating'] < $j) { ?>
+                <?php for ($i = 1; $i <= 5; $i++) { ?>
+                <?php if ($product['rating'] < $i) { ?>
                 <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>
                 <?php } else { ?>
                 <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span>
@@ -368,11 +380,11 @@
             </div>
           </div>
         </div>
-        <?php if (($column_left && $column_right) && (($i+1) % 2 == 0)) { ?>
+        <?php if (($column_left && $column_right) && ($i % 2 == 0)) { ?>
         <div class="clearfix visible-md visible-sm"></div>
-        <?php } elseif (($column_left || $column_right) && (($i+1) % 3 == 0)) { ?>
+        <?php } elseif (($column_left || $column_right) && ($i % 3 == 0)) { ?>
         <div class="clearfix visible-md"></div>
-        <?php } elseif (($i+1) % 4 == 0) { ?>
+        <?php } elseif ($i % 4 == 0) { ?>
         <div class="clearfix visible-md"></div>
         <?php } ?>
         <?php $i++; ?>
@@ -454,7 +466,7 @@ $('#button-cart').on('click', function() {
 			if (json['success']) {
 				$('.breadcrumb').after('<div class="alert alert-success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 
-				$('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+				$('#cart > button').html('<i class="fa fa-shopping-cart"></i> ' + json['total']);
 
 				$('html, body').animate({ scrollTop: 0 }, 'slow');
 
@@ -522,7 +534,7 @@ $('button[id^=\'button-upload\']').on('click', function() {
 					if (json['success']) {
 						alert(json['success']);
 
-						$(node).parent().find('input').val(json['code']);
+						$(node).parent().find('input').attr('value', json['code']);
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {

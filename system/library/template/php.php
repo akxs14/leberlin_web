@@ -1,26 +1,29 @@
 <?php
-namespace Template;
-final class PHP {
+class Template {
 	private $data = array();
 	
 	public function set($key, $value) {
 		$this->data[$key] = $value;
 	}
 	
-	public function render($template) {
+	public function render() {
 		$file = DIR_TEMPLATE . $template;
 
-		if (is_file($file)) {
-			extract($this->data);
+		if (file_exists($file)) {
+			extract($data);
 
 			ob_start();
 
 			require($file);
 
-			return ob_get_clean();
-		}
+			$output = ob_get_contents();
 
-		trigger_error('Error: Could not load template ' . $file . '!');
-		exit();
+			ob_end_clean();
+
+			return $output;
+		} else {
+			trigger_error('Error: Could not load template ' . $file . '!');
+			exit();
+		}
 	}	
 }

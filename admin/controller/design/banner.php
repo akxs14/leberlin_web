@@ -38,7 +38,7 @@ class ControllerDesignBanner extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, true));
+			$this->response->redirect($this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, 'SSL'));
 		}
 
 		$this->getForm();
@@ -70,7 +70,7 @@ class ControllerDesignBanner extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, true));
+			$this->response->redirect($this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, 'SSL'));
 		}
 
 		$this->getForm();
@@ -104,7 +104,7 @@ class ControllerDesignBanner extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, true));
+			$this->response->redirect($this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, 'SSL'));
 		}
 
 		$this->getList();
@@ -147,16 +147,16 @@ class ControllerDesignBanner extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL')
 		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, true)
+			'href' => $this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, 'SSL')
 		);
 
-		$data['add'] = $this->url->link('design/banner/add', 'token=' . $this->session->data['token'] . $url, true);
-		$data['delete'] = $this->url->link('design/banner/delete', 'token=' . $this->session->data['token'] . $url, true);
+		$data['add'] = $this->url->link('design/banner/add', 'token=' . $this->session->data['token'] . $url, 'SSL');
+		$data['delete'] = $this->url->link('design/banner/delete', 'token=' . $this->session->data['token'] . $url, 'SSL');
 
 		$data['banners'] = array();
 
@@ -176,7 +176,7 @@ class ControllerDesignBanner extends Controller {
 				'banner_id' => $result['banner_id'],
 				'name'      => $result['name'],
 				'status'    => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
-				'edit'      => $this->url->link('design/banner/edit', 'token=' . $this->session->data['token'] . '&banner_id=' . $result['banner_id'] . $url, true)
+				'edit'      => $this->url->link('design/banner/edit', 'token=' . $this->session->data['token'] . '&banner_id=' . $result['banner_id'] . $url, 'SSL')
 			);
 		}
 
@@ -226,8 +226,8 @@ class ControllerDesignBanner extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['sort_name'] = $this->url->link('design/banner', 'token=' . $this->session->data['token'] . '&sort=name' . $url, true);
-		$data['sort_status'] = $this->url->link('design/banner', 'token=' . $this->session->data['token'] . '&sort=status' . $url, true);
+		$data['sort_name'] = $this->url->link('design/banner', 'token=' . $this->session->data['token'] . '&sort=name' . $url, 'SSL');
+		$data['sort_status'] = $this->url->link('design/banner', 'token=' . $this->session->data['token'] . '&sort=status' . $url, 'SSL');
 
 		$url = '';
 
@@ -243,7 +243,7 @@ class ControllerDesignBanner extends Controller {
 		$pagination->total = $banner_total;
 		$pagination->page = $page;
 		$pagination->limit = $this->config->get('config_limit_admin');
-		$pagination->url = $this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+		$pagination->url = $this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url . '&page={page}', 'SSL');
 
 		$data['pagination'] = $pagination->render();
 
@@ -256,7 +256,7 @@ class ControllerDesignBanner extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('design/banner_list', $data));
+		$this->response->setOutput($this->load->view('design/banner_list.tpl', $data));
 	}
 
 	protected function getForm() {
@@ -315,21 +315,21 @@ class ControllerDesignBanner extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL')
 		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, true)
+			'href' => $this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, 'SSL')
 		);
 
 		if (!isset($this->request->get['banner_id'])) {
-			$data['action'] = $this->url->link('design/banner/add', 'token=' . $this->session->data['token'] . $url, true);
+			$data['action'] = $this->url->link('design/banner/add', 'token=' . $this->session->data['token'] . $url, 'SSL');
 		} else {
-			$data['action'] = $this->url->link('design/banner/edit', 'token=' . $this->session->data['token'] . '&banner_id=' . $this->request->get['banner_id'] . $url, true);
+			$data['action'] = $this->url->link('design/banner/edit', 'token=' . $this->session->data['token'] . '&banner_id=' . $this->request->get['banner_id'] . $url, 'SSL');
 		}
 
-		$data['cancel'] = $this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, true);
+		$data['cancel'] = $this->url->link('design/banner', 'token=' . $this->session->data['token'] . $url, 'SSL');
 
 		if (isset($this->request->get['banner_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$banner_info = $this->model_design_banner->getBanner($this->request->get['banner_id']);
@@ -369,24 +369,22 @@ class ControllerDesignBanner extends Controller {
 
 		$data['banner_images'] = array();
 
-		foreach ($banner_images as $key => $value) {
-			foreach ($value as $banner_image) {
-				if (is_file(DIR_IMAGE . $banner_image['image'])) {
-					$image = $banner_image['image'];
-					$thumb = $banner_image['image'];
-				} else {
-					$image = '';
-					$thumb = 'no_image.png';
-				}
-				
-				$data['banner_images'][$key][] = array(
-					'title'      => $banner_image['title'],
-					'link'       => $banner_image['link'],
-					'image'      => $image,
-					'thumb'      => $this->model_tool_image->resize($thumb, 100, 100),
-					'sort_order' => $banner_image['sort_order']
-				);
+		foreach ($banner_images as $banner_image) {
+			if (is_file(DIR_IMAGE . $banner_image['image'])) {
+				$image = $banner_image['image'];
+				$thumb = $banner_image['image'];
+			} else {
+				$image = '';
+				$thumb = 'no_image.png';
 			}
+
+			$data['banner_images'][] = array(
+				'banner_image_description' => $banner_image['banner_image_description'],
+				'link'                     => $banner_image['link'],
+				'image'                    => $image,
+				'thumb'                    => $this->model_tool_image->resize($thumb, 100, 100),
+				'sort_order'               => $banner_image['sort_order']
+			);
 		}
 
 		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
@@ -395,7 +393,7 @@ class ControllerDesignBanner extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('design/banner_form', $data));
+		$this->response->setOutput($this->load->view('design/banner_form.tpl', $data));
 	}
 
 	protected function validateForm() {
@@ -408,10 +406,10 @@ class ControllerDesignBanner extends Controller {
 		}
 
 		if (isset($this->request->post['banner_image'])) {
-			foreach ($this->request->post['banner_image'] as $language_id => $value) {
-				foreach ($value as $banner_image_id => $banner_image) {
-					if ((utf8_strlen($banner_image['title']) < 2) || (utf8_strlen($banner_image['title']) > 64)) {
-						$this->error['banner_image'][$language_id][$banner_image_id] = $this->language->get('error_title');
+			foreach ($this->request->post['banner_image'] as $banner_image_id => $banner_image) {
+				foreach ($banner_image['banner_image_description'] as $language_id => $banner_image_description) {
+					if ((utf8_strlen($banner_image_description['title']) < 2) || (utf8_strlen($banner_image_description['title']) > 64)) {
+						$this->error['banner_image'][$banner_image_id][$language_id] = $this->language->get('error_title');
 					}
 				}
 			}

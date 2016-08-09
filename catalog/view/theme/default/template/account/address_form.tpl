@@ -289,19 +289,15 @@
 <script type="text/javascript"><!--
 // Sort the custom fields
 $('.form-group[data-sort]').detach().each(function() {
-	if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('.form-group').length-2) {
-		$('.form-group').eq(parseInt($(this).attr('data-sort'))+2).before(this);
+	if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('.form-group').length) {
+		$('.form-group').eq($(this).attr('data-sort')).before(this);
 	}
 
-	if ($(this).attr('data-sort') > $('.form-group').length-2) {
+	if ($(this).attr('data-sort') > $('.form-group').length) {
 		$('.form-group:last').after(this);
 	}
 
-	if ($(this).attr('data-sort') == $('.form-group').length-2) {
-		$('.form-group:last').after(this);
-	}
-
-	if ($(this).attr('data-sort') < -$('.form-group').length-2) {
+	if ($(this).attr('data-sort') < -$('.form-group').length) {
 		$('.form-group:first').before(this);
 	}
 });
@@ -348,7 +344,7 @@ $('button[id^=\'button-custom-field\']').on('click', function() {
 					if (json['success']) {
 						alert(json['success']);
 
-						$(node).parent().find('input').val(json['code']);
+						$(node).parent().find('input').attr('value', json['code']);
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {

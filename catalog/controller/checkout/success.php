@@ -7,25 +7,23 @@ class ControllerCheckoutSuccess extends Controller {
 			$this->cart->clear();
 
 			// Add to activity log
-			if ($this->config->get('config_customer_activity')) {
-				$this->load->model('account/activity');
+			$this->load->model('account/activity');
 
-				if ($this->customer->isLogged()) {
-					$activity_data = array(
-						'customer_id' => $this->customer->getId(),
-						'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName(),
-						'order_id'    => $this->session->data['order_id']
-					);
+			if ($this->customer->isLogged()) {
+				$activity_data = array(
+					'customer_id' => $this->customer->getId(),
+					'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName(),
+					'order_id'    => $this->session->data['order_id']
+				);
 
-					$this->model_account_activity->addActivity('order_account', $activity_data);
-				} else {
-					$activity_data = array(
-						'name'     => $this->session->data['guest']['firstname'] . ' ' . $this->session->data['guest']['lastname'],
-						'order_id' => $this->session->data['order_id']
-					);
+				$this->model_account_activity->addActivity('order_account', $activity_data);
+			} else {
+				$activity_data = array(
+					'name'     => $this->session->data['guest']['firstname'] . ' ' . $this->session->data['guest']['lastname'],
+					'order_id' => $this->session->data['order_id']
+				);
 
-					$this->model_account_activity->addActivity('order_guest', $activity_data);
-				}
+				$this->model_account_activity->addActivity('order_guest', $activity_data);
 			}
 
 			unset($this->session->data['shipping_method']);
@@ -58,7 +56,7 @@ class ControllerCheckoutSuccess extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_checkout'),
-			'href' => $this->url->link('checkout/checkout', '', true)
+			'href' => $this->url->link('checkout/checkout', '', 'SSL')
 		);
 
 		$data['breadcrumbs'][] = array(
@@ -69,7 +67,7 @@ class ControllerCheckoutSuccess extends Controller {
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		if ($this->customer->isLogged()) {
-			$data['text_message'] = sprintf($this->language->get('text_customer'), $this->url->link('account/account', '', true), $this->url->link('account/order', '', true), $this->url->link('account/download', '', true), $this->url->link('information/contact'));
+			$data['text_message'] = sprintf($this->language->get('text_customer'), $this->url->link('account/account', '', 'SSL'), $this->url->link('account/order', '', 'SSL'), $this->url->link('account/download', '', 'SSL'), $this->url->link('information/contact'));
 		} else {
 			$data['text_message'] = sprintf($this->language->get('text_guest'), $this->url->link('information/contact'));
 		}
@@ -85,6 +83,10 @@ class ControllerCheckoutSuccess extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		$this->response->setOutput($this->load->view('common/success', $data));
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/common/success.tpl')) {
+			$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/common/success.tpl', $data));
+		} else {
+			$this->response->setOutput($this->load->view('default/template/common/success.tpl', $data));
+		}
 	}
 }

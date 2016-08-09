@@ -17,12 +17,12 @@ class Response {
 		$this->level = $level;
 	}
 
-	public function getOutput() {
-		return $this->output;
-	}
-	
 	public function setOutput($output) {
 		$this->output = $output;
+	}
+
+	public function getOutput() {
+		return $this->output;
 	}
 
 	private function compress($data, $level = 0) {
@@ -57,12 +57,18 @@ class Response {
 
 	public function output() {
 		if ($this->output) {
-			$output = $this->level ? $this->compress($this->output, $this->level) : $this->output;
+			if ($this->level) {
+				$output = $this->compress($this->output, $this->level);
+			} else {
+				$output = $this->output;
+			}
+
 			if (!headers_sent()) {
 				foreach ($this->headers as $header) {
 					header($header, true);
 				}
 			}
+
 			echo $output;
 		}
 	}
